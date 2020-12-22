@@ -156,7 +156,13 @@ After sourcing your setup bash using
 ```
 source devel/setup.bash
 ```
-## Suported cameras
+## For AirSim
+Change the camera topics and calibration parameters in the launch file to match your camera output.
+```
+roslaunch orb_slam2_ros orb_slam2_airsim_rgbd.launch
+```
+
+## Other Suported cameras
 | Camera               | Mono                                                           | Stereo                                                           | RGBD                                                       |
 |----------------------|----------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------|
 | Intel RealSense r200 | ``` roslaunch orb_slam2_ros orb_slam2_r200_mono.launch ```     | ``` roslaunch orb_slam2_ros orb_slam2_r200_stereo.launch ```     | ``` roslaunch orb_slam2_ros orb_slam2_r200_rgbd.launch ``` |
@@ -166,8 +172,13 @@ source devel/setup.bash
 Use the command from the corresponding cell for your camera to launch orb_slam2_ros with the right parameters for your setup.
 
 # 6. Docker
-An easy way is to use orb_slam2_ros with Docker. This repository ships with a Dockerfile based on ROS kinetic.
+An easy way is to use orb_slam2_ros with Docker. This repository ships with a Dockerfile based on ROS kinetic/melodic.
 The container includes orb_slam2_ros as well as the Intel RealSense package for quick testing and data collection.
+```
+ $ docker build -t orbslam2_ros PATH/TO/CATKIN_WS/src/orb_slam_2_ros/docker/melodic 
+ $ docker run -it --rm --network host --ipc=host orbslam2_ros:latest
+
+```
 
 # 7. FAQ
 Here are some answers to frequently asked questions.
