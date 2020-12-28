@@ -1,3 +1,69 @@
+# Steps for running DSO with AirSim data (adapted from original README)
+
+## 1. Building orb_slam2_ros
+We have tested the library in **Ubuntu 16.04** with **ROS Kinetic** and **Ubuntu 18.04** with **ROS Melodic**. A powerful computer (e.g. i7) will ensure real-time performance and provide more stable and accurate results. Refer to **4. Docker** for using docker to run. 
+A C++11 compiler is needed.
+
+## Getting the code
+Clone the repository into your catkin workspace:
+```
+git clone https://github.com/appliedAI-Initiative/orb_slam_2_ros.git
+```
+
+## ROS
+This ROS node requires catkin_make_isolated or catkin build to build. This package depends on a number of other ROS packages which ship with the default installation of ROS. 
+If they are not installed use [rosdep](http://wiki.ros.org/rosdep) to install them. Set up your catkin workspace by following [this guide](http://wiki.ros.org/catkin/Tutorials/create_a_workspace). In your catkin folder run
+```
+sudo rosdep init
+rosdep update
+rosdep install --from-paths src --ignore-src -r -y
+```
+to install all dependencies for all packages. If you already initialized rosdep you get a warning which you can ignore.
+
+## Eigen3
+Required by g2o. Download and install instructions can be found [here](http://eigen.tuxfamily.org).
+Otherwise Eigen can be installed as a binary with:
+```
+sudo apt install libeigen3-dev
+```
+**Required at least Eigen 3.1.0**.
+
+## Building
+To build the node run
+```
+catkin build
+```
+in your catkin folder.
+
+# 2. Configuration
+## Vocab file
+To run the algorithm expects both a vocabulary file (see the paper) which ships with this repository.
+
+## Config
+The config files for camera calibration and tracking hyper paramters from the original implementation are replaced with ros paramters which get set from a launch file.
+
+# 3. Run
+After sourcing your setup bash using
+```
+source devel/setup.bash
+```
+- For AirSim
+Change the camera topics and calibration parameters in the launch file to match your camera output.
+```
+roslaunch orb_slam2_ros orb_slam2_airsim_rgbd.launch
+```
+# 4. Docker
+An easy way is to use orb_slam2_ros with Docker. This repository ships with a Dockerfile based on ROS kinetic/melodic.
+The container includes orb_slam2_ros as well as the Intel RealSense package for quick testing and data collection.
+```
+ $ docker build -t orbslam2_ros PATH/TO/CATKIN_WS/src/orb_slam_2_ros/docker/melodic 
+ $ docker run -it --rm --network host --ipc=host orbslam2_ros:latest
+
+```
+
+
+# Original README below:
+
 # ORB-SLAM2
 **ORB-SLAM2 Authors:** [Raul Mur-Artal](http://webdiis.unizar.es/~raulmur/), [Juan D. Tardos](http://webdiis.unizar.es/~jdtardos/), [J. M. M. Montiel](http://webdiis.unizar.es/~josemari/) and [Dorian Galvez-Lopez](http://doriangalvez.com/) ([DBoW2](https://github.com/dorian3d/DBoW2)).
 The original implementation can be found [here](https://github.com/raulmur/ORB_SLAM2.git).
